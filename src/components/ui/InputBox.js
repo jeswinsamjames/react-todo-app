@@ -11,6 +11,10 @@ const InputBox = ({
     handlePriorityChange,
     handleDueDateChange,
     addNew,
+    changeSortOrder,
+    changeSortBy,
+    sortOrder,
+    sortBy,
 }) => (
     <div>
         <input
@@ -37,6 +41,22 @@ const InputBox = ({
         <button onClick={() => addNew(value, priority, dueDate)}>
             Add Task
         </button>
+        <div>
+            <label>Sort By:</label>
+            <select value={sortBy} onChange={(e) => changeSortBy(e.target.value)}>
+                <option value="dueDate">Due Date</option>
+                <option value="priority">Priority</option>
+            </select>
+        </div>
+
+        <div>
+            <label>Sort Order:</label>
+            <select value={sortOrder} onChange={(e) => changeSortOrder(e.target.value)}>
+                <option value="ascending">Ascending</option>
+                <option value="descending">Descending</option>
+            </select>
+        </div>
+    
     </div>
 );
 
