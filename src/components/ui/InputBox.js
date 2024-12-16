@@ -16,7 +16,7 @@ const InputBox = ({
     sortOrder,
     sortBy,
 }) => (
-    <div>
+    <div className="input-box">
         <input
             type="text"
             value={value}
@@ -24,39 +24,35 @@ const InputBox = ({
             onKeyUp={handleKeyUp} 
             placeholder="Enter new task"
         />
-
         <select value={priority} onChange={handlePriorityChange}>
             <option value="High">High</option>
             <option value="Medium">Medium</option>
             <option value="Low">Low</option>
         </select>
-
         <input
             type="date"
             value={dueDate}
             onChange={handleDueDateChange} 
             placeholder="Select due date"
         />
+        <button onClick={() => addNew(value, priority, dueDate)}>Add Task</button>
 
-        <button onClick={() => addNew(value, priority, dueDate)}>
-            Add Task
-        </button>
-        <div>
-            <label>Sort By:</label>
-            <select value={sortBy} onChange={(e) => changeSortBy(e.target.value)}>
-                <option value="dueDate">Due Date</option>
-                <option value="priority">Priority</option>
-            </select>
+        <div className="sort-container">
+            <div>
+                <label>Sort By:</label>
+                <select value={sortBy} onChange={(e) => changeSortBy(e.target.value)}>
+                    <option value="dueDate">Due Date</option>
+                    <option value="priority">Priority</option>
+                </select>
+            </div>
+            <div>
+                <label>Sort Order:</label>
+                <select value={sortOrder} onChange={(e) => changeSortOrder(e.target.value)}>
+                    <option value="ascending">Ascending</option>
+                    <option value="descending">Descending</option>
+                </select>
+            </div>
         </div>
-
-        <div>
-            <label>Sort Order:</label>
-            <select value={sortOrder} onChange={(e) => changeSortOrder(e.target.value)}>
-                <option value="ascending">Ascending</option>
-                <option value="descending">Descending</option>
-            </select>
-        </div>
-    
     </div>
 );
 
@@ -89,10 +85,7 @@ export default compose(
         handleDueDateChange:
             ({ setDueDate }) =>
             (e) => {
-                
-                const dateString = new Date(
-                    e.target.value
-                ).toLocaleDateString();
+                const dateString = new Date(e.target.value).toLocaleDateString();
                 setDueDate(dateString); 
             },
     })
