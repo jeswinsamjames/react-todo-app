@@ -1,51 +1,64 @@
-import React, {Component} from 'react';
-import {FILTER_ALL} from '../../services/filter';
-import {MODE_CREATE, MODE_NONE} from '../../services/mode';
-import {objectWithOnly, wrapChildrenWith} from '../../util/common';
-import {getAll, addToList, updateStatus} from '../../services/todo';
+import React, { Component } from "react";
+import { FILTER_ALL } from "../../services/filter";
+import { MODE_CREATE, MODE_NONE } from "../../services/mode";
+import { objectWithOnly, wrapChildrenWith } from "../../util/common";
+import { getAll, addToList, updateStatus } from "../../services/todo";
 
 class StateProvider extends Component {
     constructor() {
         super();
         this.state = {
-            query: '',
+            query: "",
             mode: MODE_CREATE,
             filter: FILTER_ALL,
-            list: getAll()
-        }
+            list: getAll(),
+        };
     }
 
     render() {
         let children = wrapChildrenWith(this.props.children, {
             data: this.state,
-            actions: objectWithOnly(this, ['addNew', 'changeFilter', 'changeStatus', 'changeMode', 'setSearchQuery'])
+            actions: objectWithOnly(this, [
+                "addNew",
+                "changeFilter",
+                "changeStatus",
+                "changeMode",
+                "setSearchQuery",
+            ]),
         });
 
         return <div>{children}</div>;
     }
 
-    addNew(text) {
-        let updatedList = addToList(this.state.list, {text, completed: false});
+    addNew(text, priority, dueDate) {
+        let createdDate = new Date().toLocaleDateString(); 
+        let updatedList = addToList(this.state.list, {
+            text,
+            completed: false,
+            priority,
+            dueDate, 
+            createdDate, 
+        });
 
-        this.setState({list: updatedList});
+        this.setState({ list: updatedList });
     }
 
     changeFilter(filter) {
-        this.setState({filter});
+        this.setState({ filter });
     }
 
     changeStatus(itemId, completed) {
         const updatedList = updateStatus(this.state.list, itemId, completed);
 
-        this.setState({list: updatedList});
+        this.setState({ list: updatedList });
     }
 
     changeMode(mode = MODE_NONE) {
-        this.setState({mode});
+        this.setState({ mode });
     }
 
     setSearchQuery(text) {
-        this.setState({query: text || ''});
+        this.setState({ query: text || "" });
     }
 }
 
